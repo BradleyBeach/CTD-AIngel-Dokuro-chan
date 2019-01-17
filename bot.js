@@ -11,9 +11,8 @@ var isEveChannel = false;
 function goodMorning() {
 	console.log("Getting ready for my day.")
 	//it is here that files are loaded.
-	
-	
-	
+	ankhLastMessage = fs.readFileSync("data.txt");
+	console.log("You last spoke this many gogglies ago: " + ankhLastMessage.toString());
 	console.log("Done! Gambarimashou, ne?")
 }
 
@@ -62,7 +61,7 @@ bot.on('message', msg => {
 	//if I sent a message...
 	if(isAnkh){
 		//see if I messaged recently.
-		if(msg.createdTimestamp - ankhLastMessage  >= 30000){
+		if(msg.createdTimestamp - ankhLastMessage  >= 28800000){
 			//if I didn't, say hi!
 			msg.channel.send("Oh, it's you, sir! It's wonderful to see you again!");
 		}
@@ -133,3 +132,4 @@ bot.on('message', msg => {
 });
 
 bot.login(auth.token);
+goodMorning();
