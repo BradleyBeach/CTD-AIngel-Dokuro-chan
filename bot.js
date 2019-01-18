@@ -30,6 +30,11 @@ function goodNight() {
 	process.exit();
 }
 
+function addLesson(lesson) {
+	console.log("Someone wants me to learn something.")
+	fs.appendFileSync("TODO.txt", lesson)
+}
+
 bot.on('ready', () => {
     console.log('Connected');
     console.log('Logged in!');
@@ -90,10 +95,26 @@ bot.on('message', msg => {
 			return;
 		}
 		
+		//do they have a suggestion?
+		if(args.includes("learn to")){
+			if(isAnkh){
+				msg.channel.send("I'll get on it right away! You can count on me!")
+			} else if (isAndy) {
+				msg.channel.send("Yeah, suuuuure. I'll get right on that...")
+			} else {
+				msg.channel.send("I'll think about it and see what I can do.")
+			}
+			var commandEnd = args.indexOf("learn to")
+			var lesson = args.substring(commandEnd + 8).trim()
+			addLesson(lesson)
+			//done interpreting
+			return;
+		}
+		
 		//is it time for bed?
 		if(args.includes("sweet dreams!")){
 			if(isAnkh) {
-				msg.channel.send("/me yawns.")
+				msg.channel.send("Yawn...")
 				msg.channel.send("Come tuck me in!")
 				bot.users.get(auth.ownerID).send("Mwah! <3")
 				goodNight()
