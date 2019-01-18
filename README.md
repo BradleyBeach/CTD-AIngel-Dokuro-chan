@@ -11,6 +11,7 @@ Features:
 - alerts me, as needed
 - tells Andy to stop wasting his time playing Eve when he was work to do
 - greets me after an absence
+- gets suggestions from users
 
 To Do:
 - Amen feature
