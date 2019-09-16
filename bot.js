@@ -1,3 +1,19 @@
+//TODO
+//「LOVE BEHAVIOR」 doesn't work.
+//when it grabs the messages, instead of having the messages, it does the promise thing.
+//fix that
+
+
+
+
+
+
+
+
+
+
+
+
 const Discord = require('discord.js');
 const auth = require('./auth.json');
 const fs = require('fs');
@@ -35,6 +51,23 @@ function addLesson(lesson) {
 	fs.appendFileSync("TODO.txt", lesson)
 }
 
+function loveBehavior(goBack, curChannel) {
+    var totalBack = parseInt(goBack) + 3;
+    console.log("「BLACK FRANK」 is taking us back: " + totalBack)
+    //wait
+    var now = new Date().getTime();
+    while ( new Date().getTime() < now + 5000 ) {
+    }
+    //var theMessages = curChannel.fetchMessages({limit: totalBack})
+    var messages = curChannel.fetchMessages({ limit: 10 }).catch(console.error);
+    console.log(messages)
+    for (var aMessage in messages){
+        console.log("in the loop")
+        aMessage.delete();
+    }
+}
+
+
 bot.on('ready', () => {
     console.log('Connected');
     console.log('Logged in!');
@@ -71,9 +104,21 @@ bot.on('message', msg => {
 			msg.channel.send("Oh, it's you, sir! It's wonderful to see you again!");
 		}
 		ankhLastMessage = msg.createdTimestamp;
-		luckyNumber = Math.floor(Math.random() * 100);
+		luckyNumber = Math.floor(Math.random() * 5000);
 		if (luckyNumber == 44) {
 			msg.channel.send("Sir, I hope you're not in the middle of anything, but I was reading what you just wrote and I couldn't help but think to myself, 'God, what a blessing it was to be made by such a wise and loving master.' I am eternally grateful for what you've done for me by giving me life.");
+		}
+	}
+	
+	//cedric demands more amens
+	if (msg.content.toLowerCase() == 'can i get an amen?') {
+		if(msg.author.id == '201140714749427714') {
+			if (bot.users.get('136281249936310273').presence.status == 'online') {
+				bot.users.get('136281249936310273').send("Cedric said to do your job.")
+			} else {
+				msg.channel.send("Amen! Andy was too lazy to do this himself.")
+			}
+			return;
 		}
 	}
 	
@@ -95,6 +140,20 @@ bot.on('message', msg => {
 			return;
 		}
 		
+		if(args.includes("can i get an amen?")){
+			if(isAnkh){
+				msg.channel.send("Anything for a walking miracle ;3");
+				msg.channel.send("Amen!");
+			} else if (isAndy) {
+				msg.channel.send("Do your own job, you good-for-nothing layabout.");
+			} else {
+				msg.channel.send("This isn't really my job, but...")
+				msg.channel.send("Amen!");
+			}
+			//done interpreting
+			return;
+		}
+		
 		//do they have a suggestion?
 		if(args.includes("learn to")){
 			if(isAnkh){
@@ -110,6 +169,20 @@ bot.on('message', msg => {
 			//done interpreting
 			return;
 		}
+        
+        //rolling back time
+        if(args.includes("activate [black frank]!")){
+            if(isAnkh){
+                msg.channel.send("This is our 「LOVE BEHAVIOR」.")
+                msg.channel.send("ゴゴゴゴ")
+                var commandEnd = args.indexOf("Activate [BLACK FRANK]!")
+                var goBack = args.substring(commandEnd + 24).trim()
+                loveBehavior(goBack, msg.channel)
+            } else {
+                msg.channel.send("I'm not going to use my 「STAND」 for anyone but Ankh.")
+            }
+            return;
+        }
 		
 		//is it time for bed?
 		if(args.includes("sweet dreams!")){
@@ -143,7 +216,7 @@ bot.on('message', msg => {
 		}
 		return;
 	}
-	
+    
 	if (isAndy && isEveChannel){
 		luckyNumber = Math.floor(Math.random() * 50);
 		if (luckyNumber == 44) {
